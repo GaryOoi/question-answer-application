@@ -1,0 +1,14 @@
+{
+    "editor.rulers": [80],
+    "workbench.settings.editor": "json",
+    "workbench.settings.useSplitJSON": true,
+    "javascript.suggestionActions.enabled": false,
+    "editor.formatOnSave": true,
+    "prettier-eslint": true,
+    "eslint.run": "onSave",
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+    "files.trimFinalNewlines": true
+}
