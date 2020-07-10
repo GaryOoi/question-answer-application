@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 
 const { DB_URI } = require('./configs');
-const { allowCORS, debug } = require('./middlewares');
+// const { allowCORS, debug } = require('./middlewares');
 const routes = require('./routes');
 const logger = require('./utils/logger');
 
@@ -49,8 +49,8 @@ mongoose.connection
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
-app.use(allowCORS); // Allow CORS from React client
-app.use(debug);
+// app.use(allowCORS); // Allow CORS from React client
+// app.use(debug);
 
 // Apply API routing
 app.use('/api/v1', routes);
