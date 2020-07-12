@@ -18,3 +18,9 @@ export const PageHeaderTitle = styled.div`
 export const PageHeaderDescription = styled(PageHeaderTitle)`
   margin-bottom: 20px;
 `;
+
+export const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

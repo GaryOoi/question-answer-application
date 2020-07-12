@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { Form } from 'formik';
 
-export const LoginPageWrapper = styled.div`
+export const RegisterPageWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-grow: 1;
@@ -10,7 +10,7 @@ export const LoginPageWrapper = styled.div`
   padding: 50px 0;
 `;
 
-export const LoginFormWrapper = styled.div`
+export const RegisterFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

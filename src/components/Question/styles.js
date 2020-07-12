@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 
@@ -16,12 +15,14 @@ export const QuestionType = styled.div`
   line-height: 1.5;
 `;
 
-export const QuestionTitleLink = styled(Link)`
-  &:hover,
-  :active {
-    color: #212121;
-    text-decoration: underline;
-  }
+export const QuestionContent = styled.div`
+  display: -webkit-box;
+  color: #212121;
+  font-size: 16px;
+  margin-bottom: 8px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 export const QuestionDescription = styled(QuestionType)`
@@ -35,7 +36,7 @@ export const QuestionActionBar = styled.div`
 `;
 
 export const QuestionActionButton = styled(Button)`
-  color: #757575;
+  color: #616161;
   font-size: 13px;
   font-weight: bold;
 `;

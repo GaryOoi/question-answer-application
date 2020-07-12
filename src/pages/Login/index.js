@@ -1,41 +1,100 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Typography, Input } from 'antd';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Field } from 'formik';
+import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
+import {
+  createFormikCompatibleComponent,
+  createSubmitHandler,
+} from 'utils/formik';
+import { createCancellableRequestAPI } from 'utils/request';
+import { validateLoginForm } from 'utils/validation';
+import FormErrorMessage from 'components/FormErrorMessage';
 import {
   LoginPageWrapper,
   LoginFormWrapper,
-  LoginFormHeadSubtitle,
+  StyledForm,
+  FieldTitle,
+  BottomMarginFieldWrapper,
+  SubmitButton,
+  RegisterAccountWrapper,
 } from './styles';
 
-function Login({ history }) {
-  return (
+const FormikCompatibleComponents = {
+  InputEmail: createFormikCompatibleComponent(Input, false),
+  InputPassword: createFormikCompatibleComponent(Input.Password, false),
+};
+
+const [
+  cancellableLoginRequestAPI,
+  cancelLoginRequestAPI,
+] = createCancellableRequestAPI();
+
+function Login() {
+  const history = useHistory();
+
+  const onSuccess = () => {
+    history.push('/');
+  };
+
+  const handleSubmit = createSubmitHandler(
+    cancellableLoginRequestAPI,
+    '/users/login',
+    (values) => ({
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    }),
+    onSuccess,
+  );
+
+  useEffect(() => cancelLoginRequestAPI, []);
+
+  return Cookies.get('user') ? (
+    <Redirect to="/" />
+  ) : (
     <LoginPageWrapper>
       <LoginFormWrapper>
-        <Typography.Title level={2}>Login</Typography.Title>
-        <Formik initialValues={{ email: '', password: '' }}>
-          {(props) => (
-            <Form>
+        <Typography.Title level={2}>Login to your account</Typography.Title>
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          validate={validateLoginForm}
+          onSubmit={handleSubmit}
+        >
+          <StyledForm>
+            <FieldTitle>Email Address</FieldTitle>
+            <BottomMarginFieldWrapper>
               <Field
                 name="email"
-                component={Input}
+                component={FormikCompatibleComponents.InputEmail}
                 label="Email Address"
-                type="text"
+                type="email"
                 autoComplete="on"
               />
-              <ErrorMessage name="email" component="div" />
+              <FormErrorMessage name="email" />
+            </BottomMarginFieldWrapper>
+
+            <FieldTitle>Password</FieldTitle>
+            <BottomMarginFieldWrapper>
               <Field
                 type="password"
                 name="password"
-                component={Input.Password}
+                component={FormikCompatibleComponents.InputPassword}
               />
-              <ErrorMessage name="password" component="div" />
-              {/* <button type="submit" disabled={isSubmitting}>
-                Submit
-              </button> */}
-            </Form>
-          )}
+              <FormErrorMessage name="password" />
+            </BottomMarginFieldWrapper>
+            <SubmitButton type="primary" size="large" htmlType="submit" block>
+              Login
+            </SubmitButton>
+            <RegisterAccountWrapper>
+              New to Q&A Forum?&nbsp;&nbsp;{' '}
+              <Link to="/register">Create Acount</Link>
+            </RegisterAccountWrapper>
+          </StyledForm>
         </Formik>
       </LoginFormWrapper>
     </LoginPageWrapper>

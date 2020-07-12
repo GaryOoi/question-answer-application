@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const { DB_URI } = require('./configs');
-// const { allowCORS, debug } = require('./middlewares');
+const { allowCORS, debug } = require('./middlewares');
 const routes = require('./routes');
 const logger = require('./utils/logger');
 
@@ -49,11 +50,25 @@ mongoose.connection
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
-// app.use(allowCORS); // Allow CORS from React client
-// app.use(debug);
+app.use(allowCORS); // Allow CORS from React client
+app.use(debug);
 
 // Apply API routing
 app.use('/api/v1', routes);
+
+console.log(
+  'process.env.NODE_ENV === production',
+  process.env.NODE_ENV === 'production',
+);
+
+console.log('process.env.NODE_ENV', typeof process.env.NODE_ENV);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('build'));
+  app.get('/*', (_req, res) => {
+    res.sendFile(path.join(path.resolve(''), 'build', 'index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   logger.log(`Server is listening on port ${PORT}`);

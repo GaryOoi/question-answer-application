@@ -1,39 +1,89 @@
 import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Typography } from 'antd';
+import moment from 'moment';
 
 import {
   QuestionWrapper,
   QuestionType,
-  QuestionTitleLink,
+  QuestionContent,
   QuestionDescription,
   QuestionActionBar,
   QuestionActionButton,
   StyledCommentOutlined,
 } from './styles';
 
-function Question(props) {
+function Question({
+  type,
+  questionId,
+  title,
+  content,
+  answers,
+  programmingLanguage,
+  askedBy,
+  createdAt,
+}) {
+  const history = useHistory();
+  const handleClick = () => {
+    history.push('/answer');
+  };
+  let formattedCreatedAt = moment(createdAt).format('MMMM DD, YYYY');
+
   return (
     <QuestionWrapper>
-      <QuestionType>Javascript</QuestionType>
-      <QuestionTitleLink to="/">
+      <QuestionType>{programmingLanguage}</QuestionType>
+      {type === 'question' ? (
         <Typography.Title level={4}>
-          Are the variables inside the parentheses preceding callback functions
-          in Flutter passed as arguments into those callback functions?
+          <Link
+            to={{
+              pathname: `/answer/${questionId}`,
+              state: {
+                question: {
+                  questionId,
+                  title,
+                  content,
+                  answers,
+                  programmingLanguage,
+                  askedBy,
+                  createdAt,
+                },
+              },
+            }}
+          >
+            {title}
+          </Link>
         </Typography.Title>
-      </QuestionTitleLink>
+      ) : (
+        <Typography.Title level={4}>{title}</Typography.Title>
+      )}
+      <QuestionContent>{content}</QuestionContent>
       <QuestionDescription>
-        Asked by lala64 on December 18, 2019
+        Asked by {askedBy} on {formattedCreatedAt}
       </QuestionDescription>
       <QuestionActionBar>
-        <QuestionActionButton type="text" icon={<StyledCommentOutlined />}>
-          24 Answers
+        <QuestionActionButton
+          type="text"
+          icon={<StyledCommentOutlined />}
+          onClick={handleClick}
+          disabled={type !== 'question'}
+        >
+          {answers} Answers
         </QuestionActionButton>
       </QuestionActionBar>
     </QuestionWrapper>
   );
 }
 
-Question.propTypes = {};
+Question.propTypes = {
+  type: PropTypes.string.isRequired,
+  questionId: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  answers: PropTypes.number.isRequired,
+  programmingLanguage: PropTypes.string.isRequired,
+  askedBy: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
+};
 
 export default Question;

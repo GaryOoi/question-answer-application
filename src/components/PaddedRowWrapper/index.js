@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { BackgroundColorWrapper, PaddedWrapper } from './styles';
 
-function PaddedRowWrapper({ backgroundColor, children }) {
+function PaddedRowWrapper({ children }) {
   return (
     <BackgroundColorWrapper>
       <PaddedWrapper>{children}</PaddedWrapper>
@@ -12,7 +12,6 @@ function PaddedRowWrapper({ backgroundColor, children }) {
 }
 
 PaddedRowWrapper.propTypes = {
-  backgroundColor: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };
 
