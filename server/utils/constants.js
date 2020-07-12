@@ -5,7 +5,7 @@ const API_DOMAIN =
     : 'http://localhost:8000';
 const REACT_DOMAIN =
   process.env.NODE_ENV === 'production'
-    ? 'http://localhost:3000'
+    ? 'https://question-answering-system.herokuapp.com'
     : 'http://localhost:3000';
 
 // Internal URL (from server)
