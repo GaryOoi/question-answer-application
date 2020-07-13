@@ -6,9 +6,10 @@ import { sleep } from './utils';
 //   MAX_RECONNECTION_TRIES,
 //   RECONNECTION_INTERVAL,
 // } from '../globals/constants';
-const PORT = process.env.PORT || 8080;
-const API_BASE_URL = `http://localhost:${PORT}/api/v1`;
-// const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://question-answering-system.herokuapp.com/api/v1'
+    : 'http://localhost:8080/api/v1';
 export const RECONNECTION_INTERVAL = 2000; // seconds
 const MAX_RECONNECTION_TRIES = 3;
 
