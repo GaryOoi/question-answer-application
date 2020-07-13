@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 8080;
 // Instantiate the app here
 const app = express();
 
+console.log('DB_URI', DB_URI);
 // Initiate database connection
 mongoose
   .connect(DB_URI, {

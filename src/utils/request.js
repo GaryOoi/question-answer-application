@@ -7,7 +7,7 @@ import { sleep } from './utils';
 //   RECONNECTION_INTERVAL,
 // } from '../globals/constants';
 
-const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_BASE_URL = `http://localhost:${process.env.PORT || 8080}/api/v1`;
 export const RECONNECTION_INTERVAL = 2000; // seconds
 const MAX_RECONNECTION_TRIES = 3;
 

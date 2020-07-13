@@ -32,7 +32,7 @@
   "scripts": {
     "devclient": "react-scripts start",
     "devserver": "nodemon --watch server server",
-    "dev": "run-p devserver client",
+    "dev": "run-p devserver devclient",
     "prodserver": "set NODE_ENV=production&&node server",
     "build": "set NODE_ENV=production&&react-scripts build",
     "start": "node server",
