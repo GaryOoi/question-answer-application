@@ -1,16 +1,29 @@
-const express = require('express');
-const sanitize = require('mongo-sanitize');
+const express = require("express");
+const sanitize = require("mongo-sanitize");
 
-const Question = require('../../models/Question');
-const { authUser, validate } = require('../../middlewares');
-const { ValidateAskQuestionForm } = require('../../utils/validation');
-const logger = require('../../utils/logger');
-const ERROR_MESSAGES = require('../../utils/errors');
-const { isDuplicateKeyError } = require('../../utils/db');
+const Question = require("../../models/Question");
+const { authUser, validate } = require("../../middlewares");
+const { ValidateAskQuestionForm } = require("../../utils/validation");
+const logger = require("../../utils/logger");
+const ERROR_MESSAGES = require("../../utils/errors");
+const { isDuplicateKeyError } = require("../../utils/db");
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+/**
+ * Get all questions
+ *
+ * ResObj:
+ *  {
+ *    c: <total-count>,
+ *    v: [{
+ *      id, content, questionId, title, content, programmingLanguage,
+ *      askedBy, createdAt, answers
+ *    }]
+ *    unreadCount
+ *  }
+ */
+router.get("/", async (req, res) => {
   const filterOptions = {};
 
   if (req.query.programmingLanguage) {
@@ -29,7 +42,7 @@ router.get('/', async (req, res) => {
       resObj.c = totalCount;
     }
   } catch (err) {
-    logger.error(err, 'count()', req);
+    logger.error(err, "count()", req);
     res.status(500).send(ERROR_MESSAGES.unknownError);
     return;
   }
@@ -39,18 +52,18 @@ router.get('/', async (req, res) => {
       { $match: filterOptions },
       {
         $lookup: {
-          from: 'answers',
-          localField: 'questionId',
-          foreignField: 'questionId',
-          as: 'answers',
+          from: "answers",
+          localField: "questionId",
+          foreignField: "questionId",
+          as: "answers",
         },
       },
       {
         $lookup: {
-          from: 'users',
-          localField: 'askedBy',
-          foreignField: '_id',
-          as: 'askedBy',
+          from: "users",
+          localField: "askedBy",
+          foreignField: "_id",
+          as: "askedBy",
         },
       },
       {
@@ -59,9 +72,9 @@ router.get('/', async (req, res) => {
           title: true,
           content: true,
           programmingLanguage: true,
-          'askedBy.username': true,
+          "askedBy.username": true,
           createdAt: true,
-          answers: { $size: '$answers' },
+          answers: { $size: "$answers" },
         },
       },
       { $sort: { createdAt: -1 } },
@@ -85,16 +98,19 @@ router.get('/', async (req, res) => {
     }));
     res.json(resObj);
   } catch (err) {
-    logger.error(err, 'find() and populate()', req);
+    logger.error(err, "find() and populate()", req);
     res.status(500).send(ERROR_MESSAGES.unknownError);
   }
 });
 
-router.post('/', authUser, validate(ValidateAskQuestionForm), (req, res) => {
+/**
+ * Post question
+ */
+router.post("/", authUser, validate(ValidateAskQuestionForm), (req, res) => {
   const { title, content, programmingLanguage } = req.body;
 
   Question.create({
-    questionId: sanitize(title.toLowerCase().split(' ').slice(0, 10).join('_')),
+    questionId: sanitize(title.toLowerCase().split(" ").slice(0, 10).join("_")),
     title: sanitize(title),
     content: sanitize(content),
     programmingLanguage: sanitize(programmingLanguage),
@@ -102,19 +118,19 @@ router.post('/', authUser, validate(ValidateAskQuestionForm), (req, res) => {
     askedBy: sanitize(res.locals.user.id),
   })
     .then((question) => {
-      logger.success(question.title, 'Create question', req);
-      res.json({ type: 'success' });
+      logger.success(question.title, "Create question", req);
+      res.json({ type: "success" });
     })
     .catch((err) => {
       if (isDuplicateKeyError(err)) {
-        logger.error(err, 'Create Question', req);
+        logger.error(err, "Create Question", req);
 
         res.json({
-          type: 'invalid',
+          type: "invalid",
           error: { title: ERROR_MESSAGES.duplicateQuestionError },
         });
       } else {
-        logger.error(err, 'Create researcher', req);
+        logger.error(err, "Create researcher", req);
         res.status(500).send(ERROR_MESSAGES.unknownError);
       }
     });
