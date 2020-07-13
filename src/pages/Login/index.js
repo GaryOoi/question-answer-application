@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useHistory, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Typography, Input } from "antd";
-import { Formik, Field, message } from "formik";
+import { Typography, Input, message } from "antd";
+import { Formik, Field } from "formik";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
