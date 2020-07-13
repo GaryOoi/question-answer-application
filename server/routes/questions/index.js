@@ -83,7 +83,6 @@ router.get('/', async (req, res) => {
       createdAt: question.createdAt,
       answers: question.answers,
     }));
-    console.log('resObj', resObj);
     res.json(resObj);
   } catch (err) {
     logger.error(err, 'find() and populate()', req);
