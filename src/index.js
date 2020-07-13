@@ -13,11 +13,3 @@ ReactDOM.render(
   </BrowserRouter>,
   MOUNT_NODE,
 );
-
-// Install ServiceWorker and AppCache in the end since
-// it's not most important operation and if main code fails,
-// we do not want it installed
-// if (process.env.NODE_ENV === 'production') {
-//   // eslint-disable-next-line import/no-unresolved
-//   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
-// }

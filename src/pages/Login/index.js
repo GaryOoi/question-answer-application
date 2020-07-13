@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { Typography, Input } from 'antd';
-import { Formik, Field } from 'formik';
-import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import React, { useEffect } from "react";
+import { useHistory, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Typography, Input } from "antd";
+import { Formik, Field, message } from "formik";
+import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import {
   createFormikCompatibleComponent,
   createSubmitHandler,
-} from 'utils/formik';
-import { createCancellableRequestAPI } from 'utils/request';
-import { validateLoginForm } from 'utils/validation';
-import FormErrorMessage from 'components/FormErrorMessage';
+} from "utils/formik";
+import { createCancellableRequestAPI } from "utils/request";
+import { validateLoginForm } from "utils/validation";
+import FormErrorMessage from "components/FormErrorMessage";
 import {
   LoginPageWrapper,
   LoginFormWrapper,
@@ -21,7 +21,7 @@ import {
   BottomMarginFieldWrapper,
   SubmitButton,
   RegisterAccountWrapper,
-} from './styles';
+} from "./styles";
 
 const FormikCompatibleComponents = {
   InputEmail: createFormikCompatibleComponent(Input, false),
@@ -37,31 +37,32 @@ function Login() {
   const history = useHistory();
 
   const onSuccess = () => {
-    history.push('/');
+    message.success("You have been successfully login");
+    history.push("/");
   };
 
   const handleSubmit = createSubmitHandler(
     cancellableLoginRequestAPI,
-    '/users/login',
+    "/users/login",
     (values) => ({
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     }),
-    onSuccess,
+    onSuccess
   );
 
   useEffect(() => cancelLoginRequestAPI, []);
 
-  return Cookies.get('user') ? (
+  return Cookies.get("user") ? (
     <Redirect to="/" />
   ) : (
     <LoginPageWrapper>
       <LoginFormWrapper>
         <Typography.Title level={2}>Login to your account</Typography.Title>
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ email: "", password: "" }}
           validate={validateLoginForm}
           onSubmit={handleSubmit}
         >
@@ -91,7 +92,7 @@ function Login() {
               Login
             </SubmitButton>
             <RegisterAccountWrapper>
-              New to Q&A Forum?&nbsp;&nbsp;{' '}
+              New to Q&A Forum?&nbsp;&nbsp;{" "}
               <Link to="/register">Create Acount</Link>
             </RegisterAccountWrapper>
           </StyledForm>

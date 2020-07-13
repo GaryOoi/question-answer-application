@@ -1,11 +1,7 @@
 import { message } from 'antd';
 
 import { sleep } from './utils';
-// import {
-//   API_BASE_URL,
-//   MAX_RECONNECTION_TRIES,
-//   RECONNECTION_INTERVAL,
-// } from '../globals/constants';
+
 const API_BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://question-answering-system.herokuapp.com/api/v1'

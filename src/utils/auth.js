@@ -9,7 +9,7 @@ export function createProtectedComponent(CustomComponent) {
 
     useEffect(() => {
       if (!isAuthorized) {
-        message.error('Please login to ask question!');
+        message.error('Please login to proceed!');
       }
     }, [isAuthorized]);
 

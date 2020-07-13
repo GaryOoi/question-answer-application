@@ -139,19 +139,6 @@ function debug(req, res, next) {
   logger.log(`${req.method} ${req.originalUrl}`);
 
   next();
-
-  // // Delay
-  // const seconds = 5;
-  // logger.log(chalk.bgWhite.black('Delay'), `${seconds} seconds ...`);
-  // setTimeout(() => {
-  //   logger.log(chalk.bgWhite.black('Resumed'));
-  //   next();
-  // }, seconds * 1000);
-
-  // // Reject
-  // logger.log(chalk.bgWhite.black('Reject'));
-  // // res.status(500).send('errorUnknown');
-  // res.json({ type: 'invalid', error: { age: 'Something wrong' } });
 }
 
 module.exports = {

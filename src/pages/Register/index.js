@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { Typography, Input } from 'antd';
-import { Formik, Field } from 'formik';
-import { Link, Redirect } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Typography, Input } from "antd";
+import { Formik, Field, message } from "formik";
+import { Link, Redirect } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import {
   createFormikCompatibleComponent,
   createSubmitHandler,
-} from 'utils/formik';
-import { createCancellableRequestAPI } from 'utils/request';
-import { validateRegisterForm } from 'utils/validation';
-import FormErrorMessage from 'components/FormErrorMessage';
+} from "utils/formik";
+import { createCancellableRequestAPI } from "utils/request";
+import { validateRegisterForm } from "utils/validation";
+import FormErrorMessage from "components/FormErrorMessage";
 import {
   RegisterPageWrapper,
   RegisterFormWrapper,
@@ -21,7 +21,7 @@ import {
   BottomMarginFieldWrapper,
   SubmitButton,
   RegisterAccountWrapper,
-} from './styles';
+} from "./styles";
 
 const FormikCompatibleComponents = {
   NormalInput: createFormikCompatibleComponent(Input, false),
@@ -37,30 +37,31 @@ function Register() {
   const history = useHistory();
 
   const onSuccess = () => {
-    history.push('/login');
+    message.success("Register successfully!");
+    history.push("/login");
   };
 
   const handleSubmit = createSubmitHandler(
     cancellableRegisterRequestAPI,
-    '/users/register',
+    "/users/register",
     (values) => ({
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     }),
-    onSuccess,
+    onSuccess
   );
 
   useEffect(() => cancelRegisterRequestAPI, []);
 
-  return Cookies.get('user') ? (
+  return Cookies.get("user") ? (
     <Redirect to="/" />
   ) : (
     <RegisterPageWrapper>
       <RegisterFormWrapper>
         <Typography.Title level={2}>Create your account</Typography.Title>
         <Formik
-          initialValues={{ username: '', email: '', password: '' }}
+          initialValues={{ username: "", email: "", password: "" }}
           validate={validateRegisterForm}
           onSubmit={handleSubmit}
         >

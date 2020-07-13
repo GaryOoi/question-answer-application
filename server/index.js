@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 8080;
 // Instantiate the app here
 const app = express();
 
-console.log('DB_URI', DB_URI);
 // Initiate database connection
 mongoose
   .connect(DB_URI, {
@@ -38,15 +37,6 @@ mongoose.connection
     ),
   );
 
-// Use static server to serve the Express Yourself Website
-// By placing the express.static() in app.use, we let
-// our server know that we will be rendering that index.html file and implementing all those static CSS and JS files related to it.
-// app.use(express.static('public'));
-// app.use(express.static(path.join(__dirname, 'src/build')));
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, 'src/build')));
-// }
-
 // Apply middlewares
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -56,13 +46,6 @@ app.use(debug);
 
 // Apply API routing
 app.use('/api/v1', routes);
-
-console.log(
-  'process.env.NODE_ENV === production',
-  process.env.NODE_ENV === 'production',
-);
-
-console.log('process.env.NODE_ENV', typeof process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('build'));
